@@ -1,0 +1,9 @@
+sevices:
+  nginx:
+    build:
+  container_name: nginx
+  port: 
+    - 443:443
+  restart: always
+  depends_on:
+    - wordpress
