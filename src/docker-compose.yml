@@ -1,6 +1,8 @@
 sevices:
   nginx:
     build:
+      context: .
+      dockerfile: requirements/nginx/Dockerfile
   container_name: nginx
   port: 
     - 443:443
