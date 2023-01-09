@@ -1,3 +1,6 @@
 NAME = inception
 
-$(NAME): all
+all : $(NAME)
+
+$(NAME):
+	
