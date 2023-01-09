@@ -8,7 +8,7 @@ services:
   port: 
     - "443:443"
   volumes:
-    - requirements/conf/nginx.conf:/etc/nginx/conf.d/nginx.conf #TODO記事見ながらとりあえずかいただけなのであっとるかわからんため後で確認
+    - requirements/nginx/conf/nginx.conf:/etc/nginx/conf.d/nginx.conf #TODO記事見ながらとりあえずかいただけなのであっとるかわからんため後で確認
   restart: always
   depends_on:
     - wordpress
