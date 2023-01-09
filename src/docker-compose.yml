@@ -1,11 +1,14 @@
-sevices:
+version: "3"
+services:
   nginx:
     build:
       context: .
       dockerfile: requirements/nginx/Dockerfile
   container_name: nginx
   port: 
-    - 443:443
+    - "443:443"
+  volumes:
+    - requirements/conf/nginx.conf:/etc/nginx/conf.d/nginx.conf #TODO記事見ながらとりあえずかいただけなのであっとるかわからんため後で確認
   restart: always
   depends_on:
     - wordpress
