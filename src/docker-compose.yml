@@ -1,14 +1,27 @@
 version: "3"
 services:
+  debian:
+    image: debian:latest
+    tty: true
+    restart : always
+    container_name: inception
+
   nginx:
     build:
       context: .
       dockerfile: requirements/nginx/Dockerfile
-  container_name: nginx
-  port: 
-    - "443:443"
-  volumes:
-    - requirements/nginx/conf/nginx.conf:/etc/nginx/conf.d/nginx.conf #TODO記事見ながらとりあえずかいただけなのであっとるかわからんため後で確認
-  restart: always
-  depends_on:
-    - wordpress
+# services:
+#   nginx:
+#     build:
+#       context: .
+#       dockerfile: requirements/nginx/Dockerfile
+#   container_name: nginx
+#   port: 
+#     - "443:443"
+#   volumes:
+#     - requirements/nginx/conf/nginx.conf:/etc/nginx/conf.d/nginx.conf #TODO 記事見ながらとりあえずかいただけなのであっとるかわからんため後で確認
+#   restart: always
+#   depends_on:
+#     - wordpress
+
+
