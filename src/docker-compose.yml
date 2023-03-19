@@ -5,7 +5,6 @@ services:
     tty: true
     restart : always
     container_name: inception
-
   nginx:
     build:
       context: .
