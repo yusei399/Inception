@@ -1,15 +1,5 @@
 version: "3"
 services:
-<<<<<<< HEAD
-=======
-  debian:
-    image: debian:latest
-    tty: true
-    restart : always
-    container_name: inception
-    ports:
-      - "443:443"
->>>>>>> 1caecb7344141d31063a5366f5007a773e88f2b9
   nginx:
     container_name: nginx
     build: requirements/nginx
