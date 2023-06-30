@@ -1,15 +1,27 @@
 version: "3"
 services:
-  debian:
-    image: debian:latest
-    tty: true
-    restart : always
-    container_name: inception
-
   nginx:
-    build:
-      context: .
-      dockerfile: requirements/nginx/Dockerfile
+    container_name: nginx
+    build: requirements/nginx
+    ports:
+      - "443:443"
+    volumes:
+      - pages:/var/www/html
+    networks:
+      - network
+    restart: always
+
+networks:
+  network:
+    driver: bridge
+
+volumes:
+  pages:
+
+#  nginx:
+#    build:
+#      context: .
+#      dockerfile: requirements/nginx/Dockerfile
 # services:
 #   nginx:
 #     build:
