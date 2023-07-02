@@ -1,12 +1,3 @@
 #!/bin/bash
 
-    mysql_install_db
-    service mysql start
-
-    mysql -e "CREATE USER '${MYSQL_USER}'@'localhost' identified by '${MYSQL_PASSWORD}';" &&
-        mysql -e "CREATE DATABASE IF NOT EXISTS wordpress;" &&
-        mysql -e "GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';" &&
-        mysql -e "FLUSH PRIVILEGES;"
-    mysqladmin -u root password "${MYSQL_ROOT_PASSWORD}"
-    service mysql stop
-
+sed -i 's/MYSQL_DATABASE/wordpress/g' init.sql &&  sed -i 's/MYSQL_USER/wordpress/g' init.sql &&  sed -i 's/MYSQL_PASSWORD/wordpress/g' init.sql &&  sed -i 's/MYSQL_ROOT_PASSWORD/root_pw/g' init.sql
