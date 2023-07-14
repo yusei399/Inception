@@ -11,13 +11,31 @@ services:
     networks:
       - network
     restart: always
+  mariadb:
+    build: 
+      context: .
+      dockerfile: requirements/mariadb/Dockerfile
+    container_name: mariadb
+    volumes:
+      - db-vol:/var/lib/mysql
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - network
 
 networks:
   network:
     driver: bridge
 
 volumes:
-  pages:
+  db-vol:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./mariadb-data
+
 
 #  nginx:
 #    build:
