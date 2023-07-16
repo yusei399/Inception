@@ -9,11 +9,10 @@ RUN rm -rf /etc/mysql/mariadb.conf.d/50-server.cnf
 COPY  ./requirements/mariadb/conf/50-server.cnf /etc/mysql/mariadb.conf.d/
 
 COPY ./requirements/mariadb/tools/setup.sh ./
-COPY ./requirements/mariadb/tools/init.sql ./
 RUN chmod +x setup.sh
 RUN ./setup.sh
 
-RUN service mysql start && mysql -u root -p${MYSQL_ROOT_PASSWORD} < init.sql
+#RUN service mysql start && mysql -u root -p${MYSQL_ROOT_PASSWORD} < init.sql
 
 CMD ["mysqld_safe"]
 

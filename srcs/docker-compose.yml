@@ -3,38 +3,62 @@ services:
   nginx:
     container_name: nginx
     build: requirements/nginx
+    depends_on:
+      - "wordpress"
     ports:
       - "443:443" 
     volumes:
-      - ./requirements/nginx/conf/:/etc/nginx/http.d/
-      - ./requirements/nginx/tools:/etc/nginx/ssl/
+      - pages:/var/www/html
     networks:
       - network
     restart: always
+
   mariadb:
+    container_name: mariadb
     build: 
       context: .
       dockerfile: requirements/mariadb/Dockerfile
-    container_name: mariadb
+    ports: 
+      - "3306:3306"
     volumes:
-      - db-vol:/var/lib/mysql
+      - db-volumes:/var/lib/mysql
     restart: always
     env_file:
       - .env
     networks:
       - network
 
+  wordpress:
+    container_name: wordpress
+    build: requirements/wordpress/Dockerfile
+    depends_on:
+      - mariadb 
+    volumes:
+      - pages:/var/www/html
+    env_file:
+      - .env
+    networks:
+      - network
+    restart: always
+
 networks:
   network:
     driver: bridge
 
 volumes:
-  db-vol:
+  pages:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./wordpress-data
+  db-volumes:
     driver: local
     driver_opts:
       type: none
       o: bind
       device: ./mariadb-data
+
 
 
 #  nginx:
