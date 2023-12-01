@@ -1,82 +1,62 @@
-version: "3"
+version: "2.1"
+
 services:
-  nginx:
-    container_name: nginx
-    build: requirements/nginx
-    depends_on:
-      - "wordpress"
-    ports:
-      - "443:443" 
-    volumes:
-      - pages:/var/www/html
-    networks:
-      - network
-    restart: always
+    nginx:
+        container_name: nginx
+        image: requirements/nginx
+        build: requirements/nginx
+        depends_on:
+            - "wordpress"
+        ports:
+            - "443:443"
+        volumes:
+            - pages:/var/www/html
+        networks:
+            - network
+        restart: always
 
-  mariadb:
-    container_name: mariadb
-    build: 
-      context: .
-      dockerfile: requirements/mariadb/Dockerfile
-    ports: 
-      - "3306:3306"
-    volumes:
-      - db-volumes:/var/lib/mysql
-    restart: always
-    env_file:
-      - .env
-    networks:
-      - network
+    mariadb:
+        container_name: mariadb
+        env_file:
+            - .env
+        image: requirements/db
+        build: requirements/mariadb
+        ports:
+            - "3306:3306"
+        volumes:
+            - db:/var/lib/mysql
+        networks:
+            - network
+        restart: always
 
-  wordpress:
-    container_name: wordpress
-    build: requirements/wordpress/Dockerfile
-    depends_on:
-      - mariadb 
-    volumes:
-      - pages:/var/www/html
-    env_file:
-      - .env
-    networks:
-      - network
-    restart: always
+    wordpress:
+        container_name: wordpress
+        image: requirements/wordpress
+        build: requirements/wordpress
+        depends_on:
+            - mariadb 
+        volumes:
+            - pages:/var/www/html
+        env_file:
+            - .env
+        networks:
+            - network
+        restart: always
 
 networks:
-  network:
-    driver: bridge
+    network:
+        driver: bridge
 
 volumes:
-  pages:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./wordpress-data
-  db-volumes:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./mariadb-data
-
-
-
-#  nginx:
-#    build:
-#      context: .
-#      dockerfile: requirements/nginx/Dockerfile
-# services:
-#   nginx:
-#     build:
-#       context: .
-#       dockerfile: requirements/nginx/Dockerfile
-#   container_name: nginx
-#   port: 
-#     - "443:443"
-#   volumes:
-#     - requirements/nginx/conf/nginx.conf:/etc/nginx/conf.d/nginx.conf #TODO 記事見ながらとりあえずかいただけなのであっとるかわからんため後で確認
-#   restart: always
-#   depends_on:
-#     - wordpress
-
-
+    pages:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/yuikeda/data/wordpress
+    db:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/yuikeda/data/mysql
