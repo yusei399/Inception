@@ -1,20 +1,20 @@
-FROM debian
+FROM debian:buster
 ENV TERM=xterm
 RUN apt-get update && apt-get -y install \
     apt-utils \
     dialog \
     wget \
-    php7.4 \
-    php7.4-cgi \
-    php7.4-mysql \
-    php7.4-fpm \
-    php7.4-pdo \
-    php7.4-gd \
-    php7.4-cli \
-    php7.4-mbstring \
+    php7.3 \
+    php7.3-cgi \
+    php7.3-mysql \
+    php7.3-fpm \
+    php7.3-pdo \
+    php7.3-gd \
+    php7.3-cli \
+    php7.3-mbstring \
     curl \
     mariadb-client
-COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/
+COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/
 
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
 
