@@ -1,36 +1,29 @@
-all: start
-# 起動
-start:  make-volume-dir
-	docker compose -f ./srcs/docker-compose.yml up -d
+MYSQL_DATA_PATH ?= /srcs/yuikeda/data/mysql
+WORDPRESS_DATA_PATH ?= /srcs/yuikeda/data/wordpress
 
-# 停止
+all: start
+
+start: make-volume-dir
+	MYSQL_DATA_PATH=$(PWD)$(MYSQL_DATA_PATH) WORDPRESS_DATA_PATH=$(PWD)$(WORDPRESS_DATA_PATH) docker compose -f ./srcs/docker-compose.yml up -d
 stop:
 	docker compose -f ./srcs/docker-compose.yml stop
 
-# 再ビルド
 re: rebuild
 rebuild: down build start
 
 down:
-	-docker stop $(docker ps -qa)
-	-docker rm $(docker ps -qa)
-	-docker rmi -f $(docker images -qa)
-	-docker volume rm $(docker volume ls -q)
-	-docker network rm $(docker network ls -q)
-	-docker-compose -f ./srcs/docker-compose.yml down
-	make remove-volume
-
+	- docker compose -f ./srcs/docker-compose.yml down --volumes --remove-orphans
 make-volume-dir:
-	sudo mkdir -p /home/yuikeda/data/wordpress
-	sudo mkdir -p /home/yuikeda/data/mysql
+	sudo mkdir -p $(PWD)$(WORDPRESS_DATA_PATH)
+	sudo mkdir -p $(PWD)$(MYSQL_DATA_PATH)
 
 remove-volume:
-	sudo rm -rf /home/yuikeda/data/mysql/* /home/yuikeda/data/wordpress/*
+	sudo rm -rf $(PWD)$(MYSQL_DATA_PATH)/* $(PWD)$(WORDPRESS_DATA_PATH)/*
 
 build:
 	- docker compose -f ./srcs/docker-compose.yml down --volumes --rmi all
 	- docker compose -f ./srcs/docker-compose.yml build --no-cache
 
-.PHONY: all start stop rebuild  make-volume-dir remove  n-volume build re
+.PHONY: all start stop rebuild make-volume-dir remove-volume build re
 
 #  https://localhost/wp-admin
