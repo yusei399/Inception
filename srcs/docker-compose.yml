@@ -53,12 +53,12 @@ volumes:
         driver_opts:
             type: none
             o: bind
-            device: yuikeda/data/wordpress
+            device: /home/yuikeda/data/wordpress
     db:
         driver: local
         driver_opts:
             type: none
             o: bind
-            device: yuikeda/data/mysql
+            device: /home/yuikeda/data/mysql
 
 
